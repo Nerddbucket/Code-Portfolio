@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Characters/Players</title>
+
+    <style>
+    form {
+    background-color: #f0f8ff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    }
+    textarea {
+    background-color: #fff8dc;
+    width: 100%;
+    height: 100px;
+    }
+    button, input[type="reset"] {
+    background-color: #4682b4;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px 2px;
+    border-radius: 6px;
+    }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>Characters / Players</h1>
+    <nav>
+    <a href="index.html">Overview</a>
+    <a href="characters.html">Characters/Players</a>
+    <a href="tips.html">Tips/Stats/Fun Facts</a>
+    </nav>
+</header>
+
+<h5>Here are some of the most important characters or players from AAA Tilte Battlefield 2042.</h5>
+<ul>
+    <li>Webster Mackay (Canada) - Assault Specialists- Specialty Gadget: Grappling Hook, Allows attachment to most surfaces for rapid repositioning or flanking; can be used to kill enemies.</li>
+    <li>Ewelina Lis (Poland, Added in Season 1) - Engineer Specialists-Specialty Gadget: G-84 TGM, A guided missile launcher for targeting vehicles, controllable by the player. </li>
+    <li>Maria Falck (Germany) -Support Specialists-Specialty Gadget: S21 Syrette Pistol, Fires healing darts to revive or heal teammates from a distance </li>
+</ul>
+
+<h3>Feedback Form</h3>
+<form>
+    <label for="topic">Favorite character/player:</label>
+    <select id="topic" name="topic">
+    <option value="char1">Maria Falck</option>
+    <option value="char2">Webster Mackay</option>
+    <option value="char3">Ewelina Lis </option>
+    </select>
+    <br><br>
+
+    <fieldset>
+    <legend>Rate their performance:</legend>
+    <input type="radio" id="excellent" name="rating" value="excellent">
+    <label for="excellent">Excellent</label><br>
+    <input type="radio" id="good" name="rating" value="good">
+    <label for="good">Good</label><br>
+    <input type="radio" id="average" name="rating" value="average">
+    <label for="average">Average</label>
+    </fieldset>
+    <br>
+
+    <label for="comments">Your Thoughts:</label><br>
+    <textarea id="comments" name="comments"></textarea><br><br>
+
+    <button type="submit">Submit</button>
+    <input type="reset" value="Reset">
+</form>
+
+<footer>
+    <p>Copyright © 2025 by Nathaniel Bandz. All rights reserved.</p>
+</footer>
+</body>
+</html>

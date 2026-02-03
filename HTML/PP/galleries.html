@@ -2,20 +2,273 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Prado - Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery 1 - Holden Beach | DEF*</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        body {
+            background: #0a0a0a;
+            color: #f5f5f5;
+        }
+        .gallery-image {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .gallery-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        .gallery-image img {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .gallery-image:hover img {
+            transform: scale(1.05);
+        }
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 1.5rem;
+        }
+        @media (max-width: 1024px) {
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+        @media (max-width: 640px) {
+            .masonry-grid {
+                column-count: 1;
+            }
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .lightbox-prev {
+            left: 2rem;
+        }
+        .lightbox-next {
+            right: 2rem;
+        }
+        nav {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.8);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 font-sans">
-    <div class="max-w-3xl mx-auto py-12">
-        <a href="index.html" class="text-indigo-600 hover:underline mb-4 inline-block">&larr; Back to Gallery</a>
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="(Range Rover).jpg" alt="Range Rover" class="w-full h-96 object-cover">
-            <div class="p-6">
-                <h1 class="text-3xl font-bold mb-2">The Prado</h1>
-                <p class="text-gray-600 mb-4">Nature • 2023</p>
-                <p class="text-gray-700">Description or story about this photo can go here.</p>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center py-5">
+                <a href="index.html" class="flex items-center">
+                    <span class="font-semibold text-2xl tracking-tight text-white">DEF*</span>
+                </a>
+                <a href="index.html#gallery" class="text-gray-400 hover:text-yellow-400 transition-colors font-light text-sm tracking-wide uppercase inline-flex items-center">
+                    <i data-feather="arrow-left" class="mr-2 w-4 h-4"></i>
+                    Back to Portfolio
+                </a>
             </div>
         </div>
+    </nav>
+
+    <!-- Gallery Header -->
+    <section class="pt-32 pb-16 border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl font-light text-white mb-4 tracking-tight">Holden Beach</h1>
+                <p class="text-gray-400 font-light text-lg">Sandbox • 2023</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Grid -->
+    <section class="py-16 min-h-screen">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="masonry-grid" id="gallery-grid">
+                <!-- Gallery Images -->
+                <div class="masonry-item gallery-image" onclick="openLightbox('Assets/Holden Beach/BDM_1742.jpg', 0)">
+                    <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                        <img src="Assets/Holden Beach/BDM_1742.jpg" alt="Holden Beach Image 1" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+                
+                <div class="masonry-item gallery-image" onclick="openLightbox('Assets/Holden Beach/IMG_1163.jpeg', 1)">
+                    <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                        <img src="Assets/Holden Beach/IMG_1163.jpeg" alt="Gallery 1 Image 2" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+                
+                <div class="masonry-item gallery-image" onclick="openLightbox('Assets/Holden Beach/BDM_1737_01.jpg', 2)">
+                    <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                        <img src="Assets/Holden Beach/BDM_1737_01.jpg" alt="Gallery 1 Image 3" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+                
+                <div class="masonry-item gallery-image" onclick="openLightbox('Assets/Holden Beach/BDM_1744.jpg', 3)">
+                    <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                        <img src="Assets/Holden Beach/BDM_1744.jpg" alt="Gallery 1 Image 4" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+                
+                <div class="masonry-item gallery-image" onclick="openLightbox('Assets/Holden Beach/BDM_1748_01.jpg', 4)">
+                    <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                        <img src="Assets/Holden Beach/BDM_1748_01.jpg" alt="Gallery 1 Image 5" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+                
+                <!-- Add more images here by duplicating the pattern above -->
+                <!-- Example:
+                <div class="masonry-item gallery-image" onclick="openLightbox('your-image.jpg', 5)">
+                    <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                        <img src="your-image.jpg" alt="Gallery 1 Image 6" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">
+            <i data-feather="x"></i>
+        </button>
+        <button class="lightbox-nav lightbox-prev" onclick="changeImage(-1)">
+            <i data-feather="chevron-left"></i>
+        </button>
+        <button class="lightbox-nav lightbox-next" onclick="changeImage(1)">
+            <i data-feather="chevron-right"></i>
+        </button>
+        <img id="lightbox-img" src="" alt="">
     </div>
+
+    <script>
+        feather.replace();
+        
+        // Gallery images array
+        const galleryImages = [
+            { src: 'Assets/Holden Beach/BDM_1742.jpg', alt: 'Gallery 1 Image 1' },
+            { src: 'Assets/Holden Beach/IMG_1163.jpeg', alt: 'Gallery 1 Image 2' },
+            { src: 'Assets/Holden Beach/BDM_1737_01.jpg', alt: 'Gallery 1 Image 3' },
+            { src: 'Assets/Holden Beach/BDM_1744.jpg', alt: 'Gallery 1 Image 4' },
+            { src: 'Assets/Holden Beach/BDM_1748_01.jpg', alt: 'Gallery 1 Image 5' }
+            // Add more images here: { src: 'your-image.jpg', alt: 'Description' }
+        ];
+        
+        let currentImageIndex = 0;
+        
+        function openLightbox(imageSrc, index) {
+            currentImageIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imageSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            feather.replace();
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) {
+                currentImageIndex = galleryImages.length - 1;
+            } else if (currentImageIndex >= galleryImages.length) {
+                currentImageIndex = 0;
+            }
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = galleryImages[currentImageIndex].src;
+            feather.replace();
+        }
+        
+        // Close lightbox on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                changeImage(-1);
+            } else if (e.key === 'ArrowRight') {
+                changeImage(1);
+            }
+        });
+        
+        // Close lightbox when clicking outside image
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') {
+                closeLightbox();
+            }
+        });
+    </script>
 </body>
 </html>

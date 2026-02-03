@@ -3,47 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DefMeida Professional Portfolio</title>
+    <title>DEF* | Professional Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        body {
+            background: #0a0a0a;
+            color: #f5f5f5;
+        }
         .gallery-item {
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+        .gallery-item:hover::before {
+            opacity: 1;
         }
         .gallery-item:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-8px);
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .gallery-image {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+        .gallery-image:hover {
+            transform: translateY(-8px);
+        }
+        .gallery-image img {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .gallery-image:hover img {
+            transform: scale(1.05);
+        }
+        .filter-content {
+            transition: opacity 0.3s ease;
+        }
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
         }
         .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('Silver E36.JPG');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('Assets/DEF Vintage Series.jpg');
+            background-size: 110% auto;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #0a0a0a;
+        }
+        @media (max-width: 768px) {
+            .hero-section {
+                background-size: 120% auto;
+            }
+        }
+        .filter-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .filter-btn.active {
+            color: #fbbf24;
+        }
+        .filter-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #fbbf24;
+        }
+        .filter-btn:hover {
+            color: #fbbf24;
+        }
+        .masonry-grid {
+            column-count: 2;
+            column-gap: 1.5rem;
+        }
+        @media (max-width: 640px) {
+            .masonry-grid {
+                column-count: 1;
+            }
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+        .masonry-item > a {
+            display: block;
+            width: 100%;
+        }
+        .masonry-item > a > div {
+            position: relative;
+            width: 100%;
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+        .masonry-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            z-index: 10000;
+        }
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .lightbox-prev {
+            left: 2rem;
+        }
+        .lightbox-next {
+            right: 2rem;
+        }
+        nav {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.8);
         }
     </style>
 </head>
-<body class="bg-gray-100 font-sans">
+<body>
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg fixed w-full z-10">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex space-x-7">
-                    <a href="#" class="flex items-center">
-                        
-                        <span class="font-bold text-yellow-700 text-lg">YELLOW HARDRIVE</span>
-                    </a>
-                </div>
-                <div class="hidden md:flex items-center space-x-10">
-                    <a href="#" class="text-yellow-600 font-medium">Home</a>
-                    <a href="#gallery" class="text-yellow-600 hover:text-green-800 transition">Gallery</a>
-                    <a href="#about" class="text-yellow-600 hover:text-green-800 transition">About</a>
-                    <a href="#contact" class="text-yellow-600 hover:text-green-800 transition">Contact</a>
+    <nav class="fixed w-full z-50 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center py-5">
+                <a href="#" class="flex items-center">
+                    <span class="font-semibold text-2xl tracking-tight text-white">DEF*</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-12">
+                    <a href="#gallery" class="text-gray-400 hover:text-yellow-400 transition-colors font-light text-sm tracking-wide uppercase">Portfolio</a>
+                    <a href="#about" class="text-gray-400 hover:text-yellow-400 transition-colors font-light text-sm tracking-wide uppercase">About</a>
+                    <a href="#contact" class="text-gray-400 hover:text-yellow-400 transition-colors font-light text-sm tracking-wide uppercase">Contact</a>
                 </div>
                 <div class="md:hidden">
-                    <button class="outline-none mobile-menu-button">
-                        <i data-feather="menu" class="text-gray-600"></i>
+                    <button class="outline-none mobile-menu-button text-white">
+                        <i data-feather="menu"></i>
                     </button>
                 </div>
             </div>
@@ -51,255 +235,515 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section h-screen flex items-center justify-center text-white">
-        <div class="text-center px-4" data-aos="fade-up">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4">DEF*</h1>
-            <p class="text-xl md:text-2xl mb-8">LET YOUR EYES LEAD YOU</p>
-            <a href="#gallery" class="bg-yellow-600 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-full transition duration-300 inline-flex items-center">
-                View Gallery <i data-feather="arrow-down" class="ml-2"></i>
+    <section class="hero-section h-screen flex items-center justify-center text-white relative">
+        <div class="text-center px-4 max-w-4xl mx-auto" data-aos="fade-up">
+            <h1 class="text-6xl md:text-8xl font-light mb-6 tracking-tight"></h1>
+            <p class="text-lg md:text-xl mb-12 font-light tracking-widest uppercase letter-spacing-2 text-gray-300">LET YOUR EYEs LEAD YOU</p>
+            <a href="#gallery" class="inline-flex items-center text-white border border-white/30 hover:border-yellow-400 hover:text-yellow-400 font-light py-4 px-8 transition-all duration-300 text-sm tracking-widest uppercase group">
+                Explore Portfolio
+                <i data-feather="arrow-down" class="ml-3 group-hover:translate-y-1 transition-transform"></i>
             </a>
+        </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i data-feather="chevron-down" class="text-white/50"></i>
         </div>
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Gallery Collections</h2>
-                <div class="w-20 h-1 bg-yellow-600 mx-auto mb-6"></div>
-                <p class="text-gray-600 max-w-2xl mx-auto">Explore our curated photography collections</p>
+    <section id="gallery" class="py-24 min-h-screen">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <!-- Category Filters -->
+            <div class="mb-16 text-center" data-aos="fade-up">
+                <div class="flex flex-wrap justify-center gap-8 mb-12">
+                    <button class="filter-btn active text-sm font-light tracking-widest uppercase text-white" data-filter="all">
+                        All
+                    </button>
+                    <button class="filter-btn text-sm font-light tracking-widest uppercase text-gray-400" data-filter="art">
+                        Art
+                    </button>
+                    <button class="filter-btn text-sm font-light tracking-widest uppercase text-gray-400" data-filter="galleries">
+                        Galleries
+                    </button>
+                    <button class="filter-btn text-sm font-light tracking-widest uppercase text-gray-400" data-filter="professional">
+                        Professional
+                    </button>
+                </div>
             </div>
             
-            <div class="max-w-4xl mx-auto">
-                <div class="space-y-4" data-aos="fade-up">
-                    <a href="galleries.html" class="block bg-gray-100 hover:bg-yellow-100 rounded-lg p-6 transition duration-300 border-l-4 border-yellow-600">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">The Prado Collection</h3>
-                        <p class="text-gray-600">Nature Photography • 2023</p>
+            <!-- All Images Grid (shown when "All" is selected) -->
+            <div class="masonry-grid filter-content" id="all-images" data-aos="fade-up">
+                <!-- Left Column - 3 Galleries -->
+                <!-- Gallery 1 -->
+                <div class="masonry-item gallery-item filter-item all" data-category="all">
+                    <a href="galleries.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                            <img src="Assets/BDM_1737_01.jpg" alt="Gallery 1" class="w-full h-auto">
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">Holden Beach</h3>
+                                <p class="text-gray-400 text-sm font-light">Photography • 2022</p>
+                            </div>
+                        </div>
                     </a>
-                    
-                    <a href="Gallery 2.html" class="block bg-gray-100 hover:bg-yellow-100 rounded-lg p-6 transition duration-300 border-l-4 border-yellow-600">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Gallery 2</h3>
-                        <p class="text-gray-600">Nature Photography • 2023</p>
+                </div>
+                
+                <!-- Gallery 3 -->
+                <div class="masonry-item gallery-item filter-item all" data-category="all">
+                    <a href="Gallery3.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                            <img src="Assets/IMG_1769.jpg" alt="Gallery 3" class="w-full h-auto">
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">Prints</h3>
+                                <p class="text-gray-400 text-sm font-light">Art • 2025</p>
+                            </div>
+                        </div>
                     </a>
-                    
-                    <a href="Gallery3.html" class="block bg-gray-100 hover:bg-yellow-100 rounded-lg p-6 transition duration-300 border-l-4 border-yellow-600">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Gallery 3</h3>
-                        <p class="text-gray-600">Nature Photography • 2023</p>
+                </div>
+                
+                <!-- Gallery 2 -->
+                <div class="masonry-item gallery-item filter-item all" data-category="all">
+                    <a href="Gallery 2.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                            <img src="Assets/BDM_1133.jpg" alt="Gallery 2" class="w-full h-auto">
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">Automotive</h3>
+                                <p class="text-gray-400 text-sm font-light">Street Photography • 2023</p>
+                            </div>
+                        </div>
                     </a>
-                    
-                    <a href="Gallery4.html" class="block bg-gray-100 hover:bg-yellow-100 rounded-lg p-6 transition duration-300 border-l-4 border-yellow-600">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Gallery 4</h3>
-                        <p class="text-gray-600">Nature Photography • 2023</p>
+                </div>
+                
+                <!-- Right Column - 2 Galleries -->
+                <!-- Gallery 4 -->
+                <div class="masonry-item gallery-item filter-item all" data-category="all">
+                    <a href="Gallery4.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                            <img src="Assets/24).jpg" alt="Gallery 4" class="w-full h-auto">
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">Portraits</h3>
+                                <p class="text-gray-400 text-sm font-light">Portrait Photography • 2023</p>
+                            </div>
+                        </div>
                     </a>
-                    
-                    <a href="Gallery5.html" class="block bg-gray-100 hover:bg-yellow-100 rounded-lg p-6 transition duration-300 border-l-4 border-yellow-600">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Gallery 5</h3>
-                        <p class="text-gray-600">Nature Photography • 2023</p>
+                </div>
+                
+                <!-- Gallery 5 -->
+                <div class="masonry-item gallery-item filter-item all" data-category="all">
+                    <a href="Gallery5.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                            <img src="Assets/BDM_0858-2.jpg" alt="Gallery 5" class="w-full h-auto">
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">Gallery 5</h3>
+                                <p class="text-gray-400 text-sm font-light">Art • 2023</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                
+                <!-- Add more individual images here by duplicating the pattern above -->
+            </div>
+            
+            <!-- Gallery Collections Grid (shown when "Galleries" is selected) -->
+            <div class="masonry-grid filter-content" id="gallery-collections" style="display: none;" data-aos="fade-up">
+                <!-- Gallery Item 1 -->
+                <div class="masonry-item gallery-item filter-item galleries" data-category="galleries">
+                    <a href="galleries.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm aspect-[4/3]">
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                <div class="w-full h-full bg-gray-800 flex items-center justify-center text-gray-600">
+                                    <span class="text-sm font-light opacity-50">Gallery 1</span>
+                                </div>
+                            </div>
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">The Prado North East</h3>
+                                <p class="text-gray-400 text-sm font-light">Street Photography • 2020</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Gallery Item 2 -->
+                <div class="masonry-item gallery-item filter-item galleries" data-category="galleries">
+                    <a href="Gallery 2.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm aspect-[3/4]">
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                <div class="w-full h-full bg-gray-800 flex items-center justify-center text-gray-600">
+                                    <span class="text-sm font-light opacity-50">Gallery 2</span>
+                                </div>
+                            </div>
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">Gallery 2</h3>
+                                <p class="text-gray-400 text-sm font-light">Art • 2023</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Gallery Item 3 -->
+                <div class="masonry-item gallery-item filter-item galleries" data-category="galleries">
+                    <a href="Gallery3.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm aspect-[4/5]">
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                <div class="w-full h-full bg-gray-800 flex items-center justify-center text-gray-600">
+                                    <span class="text-sm font-light opacity-50">Gallery 3</span>
+                                </div>
+                            </div>
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">Gallery 3</h3>
+                                <p class="text-gray-400 text-sm font-light">Art • 2023</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Gallery Item 4 -->
+                <div class="masonry-item gallery-item filter-item galleries" data-category="galleries">
+                    <a href="Gallery4.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm aspect-[16/9]">
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                <div class="w-full h-full bg-gray-800 flex items-center justify-center text-gray-600">
+                                    <span class="text-sm font-light opacity-50">Gallery 4</span>
+                                </div>
+                            </div>
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">Gallery 4</h3>
+                                <p class="text-gray-400 text-sm font-light">Art • 2023</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Gallery Item 5 -->
+                <div class="masonry-item gallery-item filter-item galleries" data-category="galleries">
+                    <a href="Gallery5.html" class="block relative">
+                        <div class="relative overflow-hidden bg-gray-900 rounded-sm aspect-[3/4]">
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                                <div class="w-full h-full bg-gray-800 flex items-center justify-center text-gray-600">
+                                    <span class="text-sm font-light opacity-50">Gallery 5</span>
+                                </div>
+                            </div>
+                            <div class="gallery-overlay">
+                                <h3 class="text-white font-light text-xl mb-1">Gallery 5</h3>
+                                <p class="text-gray-400 text-sm font-light">Art • 2023</p>
+                            </div>
+                        </div>
                     </a>
                 </div>
             </div>
         </div>
     </section>
-FIXME///
     <!-- About Section -->
-    <section id="about" class="py-20 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0" data-aos="fade-right">
-                    <img src="http://static.photos/people/640x360/7" alt="Professional portrait" class="rounded-lg shadow-xl w-full max-w-md mx-auto">
+    <section id="about" class="py-32 border-t border-gray-800">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div data-aos="fade-right">
+                    <div class="relative overflow-hidden bg-gray-900 rounded-sm">
+                        <img src="Assets/Self_portrait.JPG" alt="Self Portrait" class="w-full h-auto">
+                    </div>
                 </div>
-                <div class="md:w-1/2 md:pl-12" data-aos="fade-left">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-6">About Me</h2>
-                    <div class="w-20 h-1 bg-indigo-600 mb-6"></div>
-                    <p class="text-gray-600 mb-4">
-                        I'm a passionate photographer with over 8 years of experience capturing moments that tell stories.
-                        My journey began with a simple point-and-shoot camera and has evolved into a professional career
-                        spanning multiple genres of photography.
+                <div data-aos="fade-left">
+                    <h2 class="text-4xl md:text-5xl font-light text-white mb-8 tracking-tight">About</h2>
+                    <div class="w-16 h-px bg-yellow-400 mb-8"></div>
+                    <p class="text-gray-400 mb-6 font-light leading-relaxed text-lg">
+                        I started with a basic point-and-shoot and now chase whatever
+                        feels cool—landscapes, portraits, street moments, architecture, or abstract details. My style is
+                        deliberately minimalist: clean lines, negative space, subtle contrast, and nothing unnecessary.
                     </p>
-                    <p class="text-gray-600 mb-6">
-                        My approach combines technical expertise with artistic vision to create images that resonate with
-                        viewers on an emotional level. Whether it's a breathtaking landscape or an intimate portrait,
-                        I strive to capture the essence of every subject.
+                    <p class="text-gray-400 mb-10 font-light leading-relaxed text-lg">
+                        I strip away the noise to let the subject breathe—capturing its quiet power, its raw essence,
+                        the way light meets form in a single, deliberate frame. Every image is an exercise in restraint,
+                        designed to resonate quietly but deeply.
                     </p>
-                    <div class="flex flex-wrap gap-4">
+                    <div class="flex flex-wrap gap-8">
                         <div class="flex items-center">
-                            <i data-feather="award" class="text-indigo-600 mr-2"></i>
-                            <span class="text-gray-700">10+ Awards</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i data-feather="camera" class="text-indigo-600 mr-2"></i>
-                            <span class="text-gray-700">5+ Years Experience</span>
+                            <i data-feather="award" class="text-yellow-400 mr-3 w-5 h-5"></i>
+                            <span class="text-gray-300 font-light">10+ Awards</span>
                         </div>
                         <div class="flex items-center">
-                            <i data-feather="image" class="text-indigo-600 mr-2"></i>
-                            <span class="text-gray-700">500+ Projects</span>
+                            <i data-feather="camera" class="text-yellow-400 mr-3 w-5 h-5"></i>
+                            <span class="text-gray-300 font-light">8+ Years Experience</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-feather="image" class="text-yellow-400 mr-3 w-5 h-5"></i>
+                            <span class="text-gray-300 font-light">500+ Projects</span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="py-20 bg-green-600 text-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl font-bold mb-4">Client Testimonials</h2>
-                <div class="w-20 h-1 bg-white mx-auto mb-6"></div>
-                <p class="max-w-2xl mx-auto opacity-90">What people say about my work</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-yellow-700 p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="100">
-                    <div class="flex items-center mb-4">
-                        <img src="http://static.photos/people/200x200/8" alt="Client" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-semibold">Sarah Johnson</h4>
-                            <p class="text-indigo-200 text-sm">Marketing Director</p>
-                        </div>
-                    </div>
-                    <p class="text-indigo-100">
-                        "Working with this artist was an absolute pleasure. The attention to detail and creative vision brought our brand to life in ways we couldn't imagine."
-                    </p>
-                </div>
-                
-                <div class="bg-yellow-700 p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="200">
-                    <div class="flex items-center mb-4">
-                        <img src="http://static.photos/people/200x200/9" alt="Client" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-semibold">Michael Chen</h4>
-                            <p class="text-indigo-200 text-sm">Event Coordinator</p>
-                        </div>
-                    </div>
-                    <p class="text-indigo-100">
-                        "The photos from our corporate event were stunning. They perfectly captured the energy and professionalism we wanted to convey to our clients."
-                    </p>
-                </div>
-                
-                <div class="bg-yellow-700 p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="300">
-                    <div class="flex items-center mb-4">
-                        <img src="http://static.photos/people/200x200/10" alt="Client" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-semibold">Emma Rodriguez</h4>
-                            <p class="text-indigo-200 text-sm">Bride</p>
-                        </div>
-                    </div>
-                    <p class="text-indigo-100">
-                        "Our wedding photos are more beautiful than we ever imagined. Every emotion, every special moment was captured perfectly. We'll cherish these forever."
-                    </p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
+    <section id="contact" class="py-32 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Get In Touch</h2>
-                <div class="w-20 h-1 bg-green-600 mx-auto mb-6"></div>
-                <p class="text-gray-600 max-w-2xl mx-auto">Ready to discuss your photography needs? Reach out and let's create something amazing together.</p>
+                <h2 class="text-4xl md:text-5xl font-light text-white mb-6 tracking-tight">Get In Touch</h2>
+                <div class="w-16 h-px bg-yellow-400 mx-auto mb-8"></div>
+                <p class="text-gray-400 max-w-2xl mx-auto font-light text-lg">Ready to discuss your photography needs? Reach out and let's create something amazing together.</p>
             </div>
             
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-gray-100 rounded-lg shadow-lg p-8" data-aos="fade-up">
-                    <form>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                            <div>
-                                <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
-                                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-                                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                            </div>
+            <div class="bg-gray-900 border border-gray-800 rounded-sm p-8 md:p-12" data-aos="fade-up">
+                <form>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="name" class="block text-gray-400 font-light mb-3 text-sm tracking-wide uppercase">Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-sm focus:outline-none focus:border-yellow-400 transition-colors font-light">
                         </div>
-                        <div class="mb-6">
-                            <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
-                            <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                        <div>
+                            <label for="email" class="block text-gray-400 font-light mb-3 text-sm tracking-wide uppercase">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-sm focus:outline-none focus:border-yellow-400 transition-colors font-light">
                         </div>
-                        <div class="mb-6">
-                            <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
-                            <textarea id="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"></textarea>
-                        </div>
-                        <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 w-full md:w-auto">
-                            Send Message <i data-feather="send" class="ml-2"></i>
-                        </button>
-                    </form>
+                    </div>
+                    <div class="mb-6">
+                        <label for="subject" class="block text-gray-400 font-light mb-3 text-sm tracking-wide uppercase">Subject</label>
+                        <input type="text" id="subject" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-sm focus:outline-none focus:border-yellow-400 transition-colors font-light">
+                    </div>
+                    <div class="mb-8">
+                        <label for="message" class="block text-gray-400 font-light mb-3 text-sm tracking-wide uppercase">Message</label>
+                        <textarea id="message" rows="6" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-sm focus:outline-none focus:border-yellow-400 transition-colors font-light resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="inline-flex items-center text-white border border-yellow-400 hover:bg-yellow-400 hover:text-black font-light py-4 px-8 transition-all duration-300 text-sm tracking-widest uppercase group">
+                        Send Message
+                        <i data-feather="arrow-right" class="ml-3 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </form>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-16">
+                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-gray-900 border border-gray-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-feather="mail" class="text-yellow-400 w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-light text-white mb-2 tracking-wide uppercase text-sm">Email</h4>
+                    <p class="text-gray-400 font-light">contact@defmedia.com</p>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                    <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-                        <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i data-feather="mail" class="text-indigo-600"></i>
-                        </div>
-                        <h4 class="font-semibold text-gray-800 mb-2">Email</h4>
-                        <p class="text-gray-600">contact@photoart.com</p>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-gray-900 border border-gray-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-feather="phone" class="text-yellow-400 w-5 h-5"></i>
                     </div>
-                    <div class="text-center" data-aos="fade-up" data-aos-delay="200">
-                        <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i data-feather="phone" class="text-indigo-600"></i>
-                        </div>
-                        <h4 class="font-semibold text-gray-800 mb-2">Phone</h4>
-                        <p class="text-gray-600">+1 (555) 123-4567</p>
+                    <h4 class="font-light text-white mb-2 tracking-wide uppercase text-sm">Phone</h4>
+                    <p class="text-gray-400 font-light">+1 (555) 123-4567</p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="bg-gray-900 border border-gray-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-feather="map-pin" class="text-yellow-400 w-5 h-5"></i>
                     </div>
-                    <div class="text-center" data-aos="fade-up" data-aos-delay="300">
-                        <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i data-feather="map-pin" class="text-indigo-600"></i>
-                        </div>
-                        <h4 class="font-semibold text-gray-800 mb-2">Location</h4>
-                        <p class="text-gray-600">New York, USA</p>
-                    </div>
+                    <h4 class="font-light text-white mb-2 tracking-wide uppercase text-sm">Location</h4>
+                    <p class="text-gray-400 font-light">New York, USA</p>
                 </div>
             </div>
         </div>
     </section>
 
+
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
+    <footer class="border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <a href="#" class="flex items-center">
-                        <i data-feather="" class="text-indigo-400 mr-2"></i>
-                        <span class="font-semibold text-xl">DefMedia</span>
+                <div class="mb-6 md:mb-0 text-center md:text-left">
+                    <a href="#" class="flex items-center justify-center md:justify-start mb-2">
+                        <span class="font-semibold text-xl text-white tracking-tight">DEF*</span>
                     </a>
-                    <p class="text-gray-400 mt-2">Capturing life's beautiful moments.</p>
+                    <p class="text-gray-500 font-light text-sm">Capturing life's beautiful moments.</p>
                 </div>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i data-feather="instagram"></i>
+                    <a href="#" class="text-gray-500 hover:text-yellow-400 transition-colors w-8 h-8 flex items-center justify-center">
+                        <i data-feather="instagram" class="w-5 h-5"></i>
                     </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i data-feather="facebook"></i>
+                    <a href="#" class="text-gray-500 hover:text-yellow-400 transition-colors w-8 h-8 flex items-center justify-center">
+                        <i data-feather="facebook" class="w-5 h-5"></i>
                     </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i data-feather="twitter"></i>
+                    <a href="#" class="text-gray-500 hover:text-yellow-400 transition-colors w-8 h-8 flex items-center justify-center">
+                        <i data-feather="twitter" class="w-5 h-5"></i>
                     </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i data-feather="linkedin"></i>
+                    <a href="#" class="text-gray-500 hover:text-yellow-400 transition-colors w-8 h-8 flex items-center justify-center">
+                        <i data-feather="linkedin" class="w-5 h-5"></i>
                     </a>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2023 DefMedia. All rights reserved.</p>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 font-light text-sm">
+                <p>&copy; 2024 DEF*. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">
+            <i data-feather="x"></i>
+        </button>
+        <button class="lightbox-nav lightbox-prev" onclick="changeLightboxImage(-1)">
+            <i data-feather="chevron-left"></i>
+        </button>
+        <button class="lightbox-nav lightbox-next" onclick="changeLightboxImage(1)">
+            <i data-feather="chevron-right"></i>
+        </button>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
     <script>
+        // Initialize AOS
         AOS.init({
             duration: 800,
             easing: 'ease-in-out',
-            once: true
+            once: true,
+            offset: 100
         });
         
+        // Initialize Feather Icons
         feather.replace();
         
+        // Gallery Filter Functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const allImagesGrid = document.getElementById('all-images');
+        const galleryCollectionsGrid = document.getElementById('gallery-collections');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Get filter category
+                const filterValue = button.getAttribute('data-filter');
+                
+                // Show/hide appropriate grid
+                if (filterValue === 'all') {
+                    // Show individual images grid
+                    allImagesGrid.style.display = 'grid';
+                    galleryCollectionsGrid.style.display = 'none';
+                } else if (filterValue === 'galleries') {
+                    // Show gallery collections grid
+                    allImagesGrid.style.display = 'none';
+                    galleryCollectionsGrid.style.display = 'grid';
+                } else {
+                    // For other filters (art, professional), show individual images for now
+                    allImagesGrid.style.display = 'grid';
+                    galleryCollectionsGrid.style.display = 'none';
+                }
+            });
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Update URL hash on filter change (matching Pic-Time style)
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filterValue = button.getAttribute('data-filter');
+                if (filterValue === 'all') {
+                    window.history.pushState(null, '', '#');
+                } else {
+                    window.history.pushState(null, '', `#|${filterValue}`);
+                }
+            });
+        });
+        
+        // Check URL hash on load
+        window.addEventListener('load', () => {
+            const hash = window.location.hash;
+            if (hash) {
+                const match = hash.match(/\|(\w+)/);
+                if (match) {
+                    const filterValue = match[1];
+                    const filterButton = document.querySelector(`[data-filter="${filterValue}"]`);
+                    if (filterButton) {
+                        filterButton.click();
+                    }
+                }
+            }
+        });
+        
         // Mobile menu toggle
-        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
-            // You would implement mobile menu functionality here
-            alert('Mobile menu would open here in a complete implementation');
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', function() {
+                // Mobile menu implementation can be added here
+                console.log('Mobile menu clicked');
+            });
+        }
+        
+        // Parallax effect for hero section (optional enhancement)
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroSection = document.querySelector('.hero-section');
+            if (heroSection) {
+                heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+        
+        // Lightbox functionality
+        const allImages = [
+            'Assets/DEF Vintage Series.jpg',
+            'Assets/Silver E36.JPG',
+            'Assets/ (Range Rover).jpg',
+            'Assets/_DSC8333.JPG',
+            'Assets/BDM_0858-2.jpg',
+            'Assets/BDM_0921.jpg'
+        ];
+        let currentLightboxIndex = 0;
+        
+        function openLightbox(imageSrc, index) {
+            currentLightboxIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imageSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            feather.replace();
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        function changeLightboxImage(direction) {
+            currentLightboxIndex += direction;
+            if (currentLightboxIndex < 0) {
+                currentLightboxIndex = allImages.length - 1;
+            } else if (currentLightboxIndex >= allImages.length) {
+                currentLightboxIndex = 0;
+            }
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = allImages[currentLightboxIndex];
+        }
+        
+        // Close lightbox on Escape key and arrow navigation
+        document.addEventListener('keydown', (e) => {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowLeft') {
+                    changeLightboxImage(-1);
+                } else if (e.key === 'ArrowRight') {
+                    changeLightboxImage(1);
+                }
+            }
+        });
+        
+        // Close lightbox when clicking outside image
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') {
+                closeLightbox();
+            }
         });
     </script>
 </body>

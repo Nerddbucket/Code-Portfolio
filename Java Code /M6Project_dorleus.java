@@ -1,5 +1,6 @@
 import java.util.Scanner;
 public class M6Project_dorleus {
+    private static final Scanner SCANNER = new Scanner(System.in);
 
 
     public static void main(String[] args)
@@ -9,19 +10,22 @@ public class M6Project_dorleus {
     public static void runProgram()
     {
         System.out.println("Method Project");
-        Scanner bandz = new Scanner ( System.in );
         String keep_going = "yes";
         while(keep_going.equalsIgnoreCase("yes"))
         {
-                displayMenu();
+                if (!displayMenu()) {
+                        break;
+                }
                 System.out.println();
                 System.out.print("Do you want to run the program again? Enter yes or no: ");
-                keep_going = bandz.next();
+                keep_going = SCANNER.next();
+                SCANNER.nextLine();
                 System.out.println();
         }
         System.out.println("Program has terminated!");
+        SCANNER.close();
 }
-public static void displayMenu()
+public static boolean displayMenu()
         {
 System.out.println();
 System.out.println("Menu");
@@ -33,33 +37,31 @@ System.out.println("3) M6HW3: ");
 System.out.println("4) Exit: ");
 System.out.println();
 System.out.print ( "Selection: " );
-Scanner bandz = new Scanner ( System.in );
     // change the cases below to better reflect the programs you are running
-        switch ( bandz.nextInt() )
+        int selection = SCANNER.nextInt();
+        SCANNER.nextLine();
+        switch ( selection )
         {
         case 1:
                 getM6HW1();
-                displayMenu();
-                break;
+                return true;
         case 2:
                 getM6HW2();
                 System.out.println ( "You picked M6HW2" );
-                displayMenu();
-                break;
+                return true;
         case 3:
                 getM6HW3();
                 System.out.println ( "You picked M6HW3" );
-                displayMenu();
-                break;
+                return true;
         case 4:
                 System.out.println("");
                 System.out.println ( "Exiting the program" );
-                break;
+                return false;
         default:
                 System.out.println("");
-                System.out.println ( "Unrecognized option..Try again" ); System.out.println("");
-                displayMenu();
-                break;
+                System.out.println ( "Unrecognized option..Try again" );
+                System.out.println("");
+                return true;
         }
 
 }
@@ -75,18 +77,15 @@ Scanner bandz = new Scanner ( System.in );
                 System.out.println ( "You picked M6HW1" );
                 System.out.println ( "" );
                 // add your code here for M6HW1
-                Scanner Bandz = new Scanner(System.in);
-
-        
-        
         System.out.println("Enter the name of the employee: ");
-        String employeeName = Bandz.nextLine();
+        String employeeName = SCANNER.nextLine();
         
         System.out.print("Enter your hourly pay rate: ");
-        double payRate = Bandz.nextDouble();
+        double payRate = SCANNER.nextDouble();
 
         System.out.print("Enter the number of hours worked: ");
-        double hoursWorked = Bandz.nextDouble();
+        double hoursWorked = SCANNER.nextDouble();
+        SCANNER.nextLine();
 
         
         double grossPay = payRate * hoursWorked;
@@ -107,22 +106,20 @@ Scanner bandz = new Scanner ( System.in );
                 System.out.println("");
                 System.out.println ( "You picked M6HW2" );
                 System.out.println ( "" );
-                        Scanner Bandz = new Scanner(System.in);
-                
                 
                         double perGallonrate= .20;
                         double baseFee= 50.00;
                         double totalCharge,previousReading,currentReading,waterUsed;
                         String homeownersName;
-                        String runAgain;
                 
                 
                         System.out.println("Enter the name of the homeowner: ");
-                        homeownersName = Bandz.nextLine();
+                        homeownersName = SCANNER.nextLine();
                         System.out.println("Enter Previos water meter reading: ");
-                        previousReading = Bandz.nextDouble();
+                        previousReading = SCANNER.nextDouble();
                         System.out.println("Enter current water meter reading:");
-                        currentReading = Bandz.nextDouble();
+                        currentReading = SCANNER.nextDouble();
+                        SCANNER.nextLine();
                 
                         waterUsed= currentReading - previousReading;
                 
@@ -144,7 +141,6 @@ Scanner bandz = new Scanner ( System.in );
                 System.out.println ( "You picked M6HW3" );
                 System.out.println ( "" );
                 
-                Scanner Bandz = new Scanner(System.in);
         String salesPerson;
         double widget_price = 4.79;
         String runAgain;
@@ -157,20 +153,20 @@ Scanner bandz = new Scanner ( System.in );
                 double monthlySalary=500.00;
             // Get salesperson's name and base monthly salary
         System.out.print("Enter the name of the salesperson: ");
-        salesPerson = Bandz.nextLine();
+        salesPerson = SCANNER.nextLine();
 
         System.out.print("Enter monthly salary: ");
-        monthlySalary = Bandz.nextDouble();
+        monthlySalary = SCANNER.nextDouble();
             // Get weekly sales
                 for (int i = 0; i < 4; i++) {
                 System.out.printf("Enter widgets sold in week %d: ", i + 1);
-                weeklySales[i] = Bandz.nextInt();
+                weeklySales[i] = SCANNER.nextInt();
                 totalSold += weeklySales[i];
                 }
             // Get weekly returns
                 for (int i = 0; i < 4; i++) {
                 System.out.printf("Enter widgets returned in week %d: ", i + 1);
-                weeklyReturns[i] = Bandz.nextInt();
+                weeklyReturns[i] = SCANNER.nextInt();
                 totalReturned += weeklyReturns[i];
                 }
             // Calculate net widgets sold and widget sales amount
@@ -188,7 +184,7 @@ Scanner bandz = new Scanner ( System.in );
                 }
 
             // Calculate commission and total monthly pay
-            commission = widgetSales_amount * 0.10;
+            commission = widgetSales_amount * commRate;
                 double monthly_pay = monthlySalary + commission;
 
             // Output results
@@ -204,8 +200,8 @@ Scanner bandz = new Scanner ( System.in );
 
             // Ask if the user wants to run the program again
         System.out.print("\nWould you like to run the program again? (yes/no): ");
-            Bandz.nextLine(); // Clear the newline
-        runAgain = Bandz.nextLine().trim().toLowerCase();
+            SCANNER.nextLine(); // Clear the newline
+        runAgain = SCANNER.nextLine().trim().toLowerCase();
         } while (runAgain.equals("yes") || runAgain.equals("y"));
 
         System.out.println("Program ended. Goodbye!");

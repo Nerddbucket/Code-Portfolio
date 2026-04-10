@@ -1,5 +1,6 @@
 import java.util.Scanner;
 public class M6Project_dorleus {
+    private static final Scanner BANDZ = new Scanner(System.in);
 
 
     public static void main(String[] args)
@@ -9,57 +10,67 @@ public class M6Project_dorleus {
     public static void runProgram()
     {
         System.out.println("Method Project");
-        Scanner bandz = new Scanner ( System.in );
         String keep_going = "yes";
         while(keep_going.equalsIgnoreCase("yes"))
         {
-                displayMenu();
+                displayMenu(BANDZ);
                 System.out.println();
                 System.out.print("Do you want to run the program again? Enter yes or no: ");
-                keep_going = bandz.next();
+                keep_going = BANDZ.nextLine();
                 System.out.println();
         }
         System.out.println("Program has terminated!");
 }
-public static void displayMenu()
+public static void displayMenu(Scanner bandz)
         {
-System.out.println();
-System.out.println("Menu");
-System.out.println();
-    // give your programs better names
-System.out.println("1) M6HW1: ");
-System.out.println("2) M6HW2: ");
-System.out.println("3) M6HW3: ");
-System.out.println("4) Exit: ");
-System.out.println();
-System.out.print ( "Selection: " );
-Scanner bandz = new Scanner ( System.in );
-    // change the cases below to better reflect the programs you are running
-        switch ( bandz.nextInt() )
-        {
-        case 1:
-                getM6HW1();
-                displayMenu();
-                break;
-        case 2:
-                getM6HW2();
-                System.out.println ( "You picked M6HW2" );
-                displayMenu();
-                break;
-        case 3:
-                getM6HW3();
-                System.out.println ( "You picked M6HW3" );
-                displayMenu();
-                break;
-        case 4:
-                System.out.println("");
-                System.out.println ( "Exiting the program" );
-                break;
-        default:
-                System.out.println("");
-                System.out.println ( "Unrecognized option..Try again" ); System.out.println("");
-                displayMenu();
-                break;
+        boolean menuActive = true;
+        while (menuActive) {
+                System.out.println();
+                System.out.println("Menu");
+                System.out.println();
+                // give your programs better names
+                System.out.println("1) M6HW1: ");
+                System.out.println("2) M6HW2: ");
+                System.out.println("3) M6HW3: ");
+                System.out.println("4) Exit: ");
+                System.out.println();
+                System.out.print ( "Selection: " );
+                String selectionText = bandz.nextLine();
+                int selection;
+                try {
+                        selection = Integer.parseInt(selectionText.trim());
+                } catch (NumberFormatException ex) {
+                        System.out.println("");
+                        System.out.println ( "Unrecognized option..Try again" );
+                        System.out.println("");
+                        continue;
+                }
+
+                // change the cases below to better reflect the programs you are running
+                switch (selection)
+                {
+                case 1:
+                        getM6HW1(bandz);
+                        break;
+                case 2:
+                        getM6HW2(bandz);
+                        System.out.println ( "You picked M6HW2" );
+                        break;
+                case 3:
+                        getM6HW3(bandz);
+                        System.out.println ( "You picked M6HW3" );
+                        break;
+                case 4:
+                        System.out.println("");
+                        System.out.println ( "Exiting the program" );
+                        menuActive = false;
+                        break;
+                default:
+                        System.out.println("");
+                        System.out.println ( "Unrecognized option..Try again" );
+                        System.out.println("");
+                        break;
+                }
         }
 
 }
@@ -68,15 +79,13 @@ Scanner bandz = new Scanner ( System.in );
     // the 2nd and third method structure will follow the same pattern // just copy and paste the code
     // You will need to add your code from M6HW1 in the method
 
-        public static void getM6HW1()
+        public static void getM6HW1(Scanner Bandz)
         {
                 System.out.println("");
                 System.out.println("");
                 System.out.println ( "You picked M6HW1" );
                 System.out.println ( "" );
                 // add your code here for M6HW1
-                Scanner Bandz = new Scanner(System.in);
-
         
         
         System.out.println("Enter the name of the employee: ");
@@ -87,6 +96,7 @@ Scanner bandz = new Scanner ( System.in );
 
         System.out.print("Enter the number of hours worked: ");
         double hoursWorked = Bandz.nextDouble();
+        Bandz.nextLine();
 
         
         double grossPay = payRate * hoursWorked;
@@ -101,28 +111,25 @@ Scanner bandz = new Scanner ( System.in );
 
 
 
-        public static void getM6HW2()
+        public static void getM6HW2(Scanner Bandz)
         {
                 System.out.println("");
                 System.out.println("");
                 System.out.println ( "You picked M6HW2" );
                 System.out.println ( "" );
-                        Scanner Bandz = new Scanner(System.in);
                 
                 
                         double perGallonrate= .20;
                         double baseFee= 50.00;
                         double totalCharge,previousReading,currentReading,waterUsed;
                         String homeownersName;
-                        String runAgain;
-                
-                
                         System.out.println("Enter the name of the homeowner: ");
                         homeownersName = Bandz.nextLine();
                         System.out.println("Enter Previos water meter reading: ");
                         previousReading = Bandz.nextDouble();
                         System.out.println("Enter current water meter reading:");
                         currentReading = Bandz.nextDouble();
+                        Bandz.nextLine();
                 
                         waterUsed= currentReading - previousReading;
                 
@@ -136,7 +143,7 @@ Scanner bandz = new Scanner ( System.in );
                         System.out.println("Current water meter reading: " + currentReading + " gallons");
                 }
                 
-                public static void getM6HW3()
+                public static void getM6HW3(Scanner Bandz)
                 {
                 
                 System.out.println("");
@@ -144,7 +151,6 @@ Scanner bandz = new Scanner ( System.in );
                 System.out.println ( "You picked M6HW3" );
                 System.out.println ( "" );
                 
-                Scanner Bandz = new Scanner(System.in);
         String salesPerson;
         double widget_price = 4.79;
         String runAgain;

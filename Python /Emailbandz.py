@@ -41,13 +41,22 @@ def init_db():
 
 
 def extract_text_snippet(message, limit=200):
+    def decode_snippet(part):
+        payload = part.get_payload(decode=True)
+        if payload is None:
+            text = part.get_payload()
+            if isinstance(text, list):
+                return ""
+            return str(text or "")[:limit]
+        charset = part.get_content_charset() or "utf-8"
+        return payload[:limit].decode(charset, errors="ignore")
+
     if message.is_multipart():
         for part in message.walk():
             if part.get_content_type() == "text/plain" and not part.get_filename():
-                text = part.get_content()
-                return text[:limit]
+                return decode_snippet(part)
         return ""
-    return message.get_content()[:limit]
+    return decode_snippet(message)
 
 
 def log_email(conn, direction, message):
@@ -69,7 +78,6 @@ def log_email(conn, direction, message):
             datetime.utcnow().isoformat(timespec="seconds") + "Z",
         ),
     )
-    conn.commit()
 
 def read_recent_emails(conn, limit=5):
     mail = imaplib.IMAP4_SSL(IMAP_SERVER)
@@ -79,16 +87,18 @@ def read_recent_emails(conn, limit=5):
     _, data = mail.search(None, "ALL")
     ids = data[0].split()[-limit:]
 
-    for num in ids:
-        _, msg_data = mail.fetch(num, "(RFC822)")
-        raw = msg_data[0][1]
-        message = BytesParser(policy=policy.default).parsebytes(raw)
-        log_email(conn, "inbound", message)
-        print(f"Message {num.decode()}:")
-        print(raw[:200].decode(errors="ignore"))
-        print("-" * 60)
-
-    mail.logout()
+    try:
+        for num in ids:
+            _, msg_data = mail.fetch(num, "(RFC822)")
+            raw = msg_data[0][1]
+            message = BytesParser(policy=policy.default).parsebytes(raw)
+            log_email(conn, "inbound", message)
+            print(f"Message {num.decode()}:")
+            print(raw[:200].decode(errors="ignore"))
+            print("-" * 60)
+        conn.commit()
+    finally:
+        mail.logout()
 
 
 def send_email(conn, to_address, subject, body):
@@ -103,6 +113,7 @@ def send_email(conn, to_address, subject, body):
         server.send_message(message)
 
     log_email(conn, "outbound", message)
+    conn.commit()
 
 
 if __name__ == "__main__":

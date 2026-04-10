@@ -437,13 +437,18 @@ public class ShapeCalculator {
         
         Shape2D largest = shapes2D.get(0);
         Shape2D smallest = shapes2D.get(0);
+        double largestArea = largest.calculateArea();
+        double smallestArea = smallest.calculateArea();
         
         for (Shape2D shape : shapes2D) {
-            if (shape.calculateArea() > largest.calculateArea()) {
+            double currentArea = shape.calculateArea();
+            if (currentArea > largestArea) {
                 largest = shape;
+                largestArea = currentArea;
             }
-            if (shape.calculateArea() < smallest.calculateArea()) {
+            if (currentArea < smallestArea) {
                 smallest = shape;
+                smallestArea = currentArea;
             }
         }
         
@@ -461,13 +466,18 @@ public class ShapeCalculator {
         
         Shape3D largest = shapes3D.get(0);
         Shape3D smallest = shapes3D.get(0);
+        double largestVolume = largest.calculateVolume();
+        double smallestVolume = smallest.calculateVolume();
         
         for (Shape3D shape : shapes3D) {
-            if (shape.calculateVolume() > largest.calculateVolume()) {
+            double currentVolume = shape.calculateVolume();
+            if (currentVolume > largestVolume) {
                 largest = shape;
+                largestVolume = currentVolume;
             }
-            if (shape.calculateVolume() < smallest.calculateVolume()) {
+            if (currentVolume < smallestVolume) {
                 smallest = shape;
+                smallestVolume = currentVolume;
             }
         }
         

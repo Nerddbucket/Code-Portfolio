@@ -50,7 +50,7 @@ def extract_text_snippet(message, limit=200):
     return message.get_content()[:limit]
 
 
-def log_email(conn, direction, message):
+def log_email(conn, direction, message, commit=True):
     conn.execute(
         """
         INSERT INTO email_traffic (
@@ -69,7 +69,8 @@ def log_email(conn, direction, message):
             datetime.utcnow().isoformat(timespec="seconds") + "Z",
         ),
     )
-    conn.commit()
+    if commit:
+        conn.commit()
 
 def read_recent_emails(conn, limit=5):
     mail = imaplib.IMAP4_SSL(IMAP_SERVER)
@@ -79,14 +80,17 @@ def read_recent_emails(conn, limit=5):
     _, data = mail.search(None, "ALL")
     ids = data[0].split()[-limit:]
 
-    for num in ids:
-        _, msg_data = mail.fetch(num, "(RFC822)")
-        raw = msg_data[0][1]
-        message = BytesParser(policy=policy.default).parsebytes(raw)
-        log_email(conn, "inbound", message)
-        print(f"Message {num.decode()}:")
-        print(raw[:200].decode(errors="ignore"))
-        print("-" * 60)
+    # Batch inbound inserts into a single transaction to avoid
+    # per-message fsync overhead when processing many emails.
+    with conn:
+        for num in ids:
+            _, msg_data = mail.fetch(num, "(RFC822)")
+            raw = msg_data[0][1]
+            message = BytesParser(policy=policy.default).parsebytes(raw)
+            log_email(conn, "inbound", message, commit=False)
+            print(f"Message {num.decode()}:")
+            print(raw[:200].decode(errors="ignore"))
+            print("-" * 60)
 
     mail.logout()
 

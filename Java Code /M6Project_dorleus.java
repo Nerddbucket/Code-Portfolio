@@ -1,68 +1,59 @@
 import java.util.Scanner;
 public class M6Project_dorleus {
+    private static final Scanner INPUT = new Scanner(System.in);
 
 
     public static void main(String[] args)
     {
-    runProgram();
+        runProgram();
     }
     public static void runProgram()
     {
         System.out.println("Method Project");
-        Scanner bandz = new Scanner ( System.in );
-        String keep_going = "yes";
-        while(keep_going.equalsIgnoreCase("yes"))
-        {
-                displayMenu();
-                System.out.println();
-                System.out.print("Do you want to run the program again? Enter yes or no: ");
-                keep_going = bandz.next();
-                System.out.println();
+        boolean running = true;
+        while (running) {
+            running = displayMenu();
+            System.out.println();
         }
         System.out.println("Program has terminated!");
-}
-public static void displayMenu()
+        INPUT.close();
+    }
+    public static boolean displayMenu()
+    {
+        System.out.println();
+        System.out.println("Menu");
+        System.out.println();
+        System.out.println("1) M6HW1: ");
+        System.out.println("2) M6HW2: ");
+        System.out.println("3) M6HW3: ");
+        System.out.println("4) Exit: ");
+        System.out.println();
+        int selection = readInt("Selection: ");
+        switch (selection)
         {
-System.out.println();
-System.out.println("Menu");
-System.out.println();
-    // give your programs better names
-System.out.println("1) M6HW1: ");
-System.out.println("2) M6HW2: ");
-System.out.println("3) M6HW3: ");
-System.out.println("4) Exit: ");
-System.out.println();
-System.out.print ( "Selection: " );
-Scanner bandz = new Scanner ( System.in );
-    // change the cases below to better reflect the programs you are running
-        switch ( bandz.nextInt() )
-        {
-        case 1:
+            case 1:
                 getM6HW1();
-                displayMenu();
-                break;
-        case 2:
+                return true;
+            case 2:
                 getM6HW2();
-                System.out.println ( "You picked M6HW2" );
-                displayMenu();
-                break;
-        case 3:
+                System.out.println("You picked M6HW2");
+                return true;
+            case 3:
                 getM6HW3();
-                System.out.println ( "You picked M6HW3" );
-                displayMenu();
-                break;
-        case 4:
+                System.out.println("You picked M6HW3");
+                return true;
+            case 4:
                 System.out.println("");
-                System.out.println ( "Exiting the program" );
-                break;
-        default:
+                System.out.println("Exiting the program");
+                return false;
+            default:
                 System.out.println("");
-                System.out.println ( "Unrecognized option..Try again" ); System.out.println("");
-                displayMenu();
-                break;
+                System.out.println("Unrecognized option..Try again");
+                System.out.println("");
+                return true;
         }
+    }
 
-}
     // new methods containg the other programs should go here
     // I completed the first method structure for you
     // the 2nd and third method structure will follow the same pattern // just copy and paste the code
@@ -75,18 +66,14 @@ Scanner bandz = new Scanner ( System.in );
                 System.out.println ( "You picked M6HW1" );
                 System.out.println ( "" );
                 // add your code here for M6HW1
-                Scanner Bandz = new Scanner(System.in);
-
-        
-        
         System.out.println("Enter the name of the employee: ");
-        String employeeName = Bandz.nextLine();
+        String employeeName = readLine("");
         
         System.out.print("Enter your hourly pay rate: ");
-        double payRate = Bandz.nextDouble();
+        double payRate = readDouble("");
 
         System.out.print("Enter the number of hours worked: ");
-        double hoursWorked = Bandz.nextDouble();
+        double hoursWorked = readDouble("");
 
         
         double grossPay = payRate * hoursWorked;
@@ -107,22 +94,20 @@ Scanner bandz = new Scanner ( System.in );
                 System.out.println("");
                 System.out.println ( "You picked M6HW2" );
                 System.out.println ( "" );
-                        Scanner Bandz = new Scanner(System.in);
                 
                 
                         double perGallonrate= .20;
                         double baseFee= 50.00;
                         double totalCharge,previousReading,currentReading,waterUsed;
                         String homeownersName;
-                        String runAgain;
                 
                 
                         System.out.println("Enter the name of the homeowner: ");
-                        homeownersName = Bandz.nextLine();
+                        homeownersName = readLine("");
                         System.out.println("Enter Previos water meter reading: ");
-                        previousReading = Bandz.nextDouble();
+                        previousReading = readDouble("");
                         System.out.println("Enter current water meter reading:");
-                        currentReading = Bandz.nextDouble();
+                        currentReading = readDouble("");
                 
                         waterUsed= currentReading - previousReading;
                 
@@ -144,7 +129,6 @@ Scanner bandz = new Scanner ( System.in );
                 System.out.println ( "You picked M6HW3" );
                 System.out.println ( "" );
                 
-                Scanner Bandz = new Scanner(System.in);
         String salesPerson;
         double widget_price = 4.79;
         String runAgain;
@@ -157,20 +141,20 @@ Scanner bandz = new Scanner ( System.in );
                 double monthlySalary=500.00;
             // Get salesperson's name and base monthly salary
         System.out.print("Enter the name of the salesperson: ");
-        salesPerson = Bandz.nextLine();
+        salesPerson = readLine("");
 
         System.out.print("Enter monthly salary: ");
-        monthlySalary = Bandz.nextDouble();
+        monthlySalary = readDouble("");
             // Get weekly sales
                 for (int i = 0; i < 4; i++) {
                 System.out.printf("Enter widgets sold in week %d: ", i + 1);
-                weeklySales[i] = Bandz.nextInt();
+                weeklySales[i] = readInt("");
                 totalSold += weeklySales[i];
                 }
             // Get weekly returns
                 for (int i = 0; i < 4; i++) {
                 System.out.printf("Enter widgets returned in week %d: ", i + 1);
-                weeklyReturns[i] = Bandz.nextInt();
+                weeklyReturns[i] = readInt("");
                 totalReturned += weeklyReturns[i];
                 }
             // Calculate net widgets sold and widget sales amount
@@ -188,7 +172,7 @@ Scanner bandz = new Scanner ( System.in );
                 }
 
             // Calculate commission and total monthly pay
-            commission = widgetSales_amount * 0.10;
+            commission = widgetSales_amount * commRate;
                 double monthly_pay = monthlySalary + commission;
 
             // Output results
@@ -204,8 +188,7 @@ Scanner bandz = new Scanner ( System.in );
 
             // Ask if the user wants to run the program again
         System.out.print("\nWould you like to run the program again? (yes/no): ");
-            Bandz.nextLine(); // Clear the newline
-        runAgain = Bandz.nextLine().trim().toLowerCase();
+        runAgain = readLine("").trim().toLowerCase();
         } while (runAgain.equals("yes") || runAgain.equals("y"));
 
         System.out.println("Program ended. Goodbye!");
@@ -213,4 +196,33 @@ Scanner bandz = new Scanner ( System.in );
         
         
         }
+
+    private static String readLine(String prompt) {
+        if (!prompt.isEmpty()) {
+            System.out.print(prompt);
+        }
+        return INPUT.nextLine();
+    }
+
+    private static int readInt(String prompt) {
+        while (true) {
+            String line = readLine(prompt).trim();
+            try {
+                return Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid whole number.");
+            }
+        }
+    }
+
+    private static double readDouble(String prompt) {
+        while (true) {
+            String line = readLine(prompt).trim();
+            try {
+                return Double.parseDouble(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
 }

@@ -69,15 +69,22 @@ def log_email(conn, direction, message):
             datetime.utcnow().isoformat(timespec="seconds") + "Z",
         ),
     )
-    conn.commit()
 
 def read_recent_emails(conn, limit=5):
     mail = imaplib.IMAP4_SSL(IMAP_SERVER)
     mail.login(EMAIL, APP_PASS)
-    mail.select("inbox")
+    status, mailbox_data = mail.select("inbox")
+    if status != "OK":
+        mail.logout()
+        return
 
-    _, data = mail.search(None, "ALL")
-    ids = data[0].split()[-limit:]
+    total_messages = int(mailbox_data[0])
+    if total_messages == 0:
+        mail.logout()
+        return
+
+    start = max(1, total_messages - limit + 1)
+    ids = [str(i).encode() for i in range(start, total_messages + 1)]
 
     for num in ids:
         _, msg_data = mail.fetch(num, "(RFC822)")
@@ -88,6 +95,7 @@ def read_recent_emails(conn, limit=5):
         print(raw[:200].decode(errors="ignore"))
         print("-" * 60)
 
+    conn.commit()
     mail.logout()
 
 
@@ -103,6 +111,7 @@ def send_email(conn, to_address, subject, body):
         server.send_message(message)
 
     log_email(conn, "outbound", message)
+    conn.commit()
 
 
 if __name__ == "__main__":

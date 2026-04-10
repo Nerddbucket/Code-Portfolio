@@ -5,6 +5,7 @@ import java.util.ArrayList;
 // Abstract base class for all shapes
 abstract class Shape {
     protected String name;
+    protected static final DecimalFormat INFO_FORMAT = new DecimalFormat("#.##");
     
     public Shape(String name) {
         this.name = name;
@@ -27,8 +28,7 @@ abstract class Shape2D extends Shape {
     
     @Override
     public String getInfo() {
-        DecimalFormat df = new DecimalFormat("#.##");
-        return name + " - Area: " + df.format(calculateArea()) + " sq units";
+        return name + " - Area: " + INFO_FORMAT.format(calculateArea()) + " sq units";
     }
 }
 
@@ -43,9 +43,8 @@ abstract class Shape3D extends Shape {
     
     @Override
     public String getInfo() {
-        DecimalFormat df = new DecimalFormat("#.##");
-        return name + " - Volume: " + df.format(calculateVolume()) + 
-            " cubic units, Surface Area: " + df.format(calculateSurfaceArea()) + " sq units";
+        return name + " - Volume: " + INFO_FORMAT.format(calculateVolume()) +
+            " cubic units, Surface Area: " + INFO_FORMAT.format(calculateSurfaceArea()) + " sq units";
     }
 }
 
@@ -437,13 +436,19 @@ public class ShapeCalculator {
         
         Shape2D largest = shapes2D.get(0);
         Shape2D smallest = shapes2D.get(0);
-        
-        for (Shape2D shape : shapes2D) {
-            if (shape.calculateArea() > largest.calculateArea()) {
+        double largestArea = largest.calculateArea();
+        double smallestArea = smallest.calculateArea();
+
+        for (int i = 1; i < shapes2D.size(); i++) {
+            Shape2D shape = shapes2D.get(i);
+            double area = shape.calculateArea();
+            if (area > largestArea) {
                 largest = shape;
+                largestArea = area;
             }
-            if (shape.calculateArea() < smallest.calculateArea()) {
+            if (area < smallestArea) {
                 smallest = shape;
+                smallestArea = area;
             }
         }
         
@@ -461,13 +466,19 @@ public class ShapeCalculator {
         
         Shape3D largest = shapes3D.get(0);
         Shape3D smallest = shapes3D.get(0);
-        
-        for (Shape3D shape : shapes3D) {
-            if (shape.calculateVolume() > largest.calculateVolume()) {
+        double largestVolume = largest.calculateVolume();
+        double smallestVolume = smallest.calculateVolume();
+
+        for (int i = 1; i < shapes3D.size(); i++) {
+            Shape3D shape = shapes3D.get(i);
+            double volume = shape.calculateVolume();
+            if (volume > largestVolume) {
                 largest = shape;
+                largestVolume = volume;
             }
-            if (shape.calculateVolume() < smallest.calculateVolume()) {
+            if (volume < smallestVolume) {
                 smallest = shape;
+                smallestVolume = volume;
             }
         }
         

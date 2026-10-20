@@ -8,6 +8,7 @@ Course and lab work by [Nate Dorleus](https://github.com/Nerddbucket).
 | --- | --- |
 | [Java Code](./Java%20Code%20) | Java labs: to-do list, calculators, homework assignments |
 | [Python](./Python%20) | Python labs: input/output, loops, homework assignments |
+| [Traffic Monitor](./Python%20/traffic-monitor) | Low-CPU live top-talkers dashboard for Mac (tshark / Wireshark CLI) |
 
 Related Docker / Linux lab (separate repo):
 

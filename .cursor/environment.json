@@ -1,0 +1,4 @@
+{
+  "name": "Code Portfolio",
+  "install": "if [ -f scripts/setup.sh ]; then bash scripts/setup.sh; else java -version && javac -version && python3 --version; fi"
+}

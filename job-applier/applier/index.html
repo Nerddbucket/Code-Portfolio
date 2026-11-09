@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Job applier</title>
+  <style>
+    :root { color-scheme: light; }
+    body { margin: 0; background: #f3efe6; color: #1c1915; font: 18px/1.45 "Segoe UI", sans-serif; }
+    main { max-width: 880px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { font-family: Georgia, serif; font-size: 42px; margin: 0 0 8px; }
+    .lede { margin: 0 0 20px; max-width: 40rem; }
+    .banner { padding: 12px 14px; background: #fff; border: 1px solid #d9d1c3; margin-bottom: 16px; }
+    .banner.live { background: #f8e8e4; border-color: #9d2c2c; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    button { font: inherit; border: 0; padding: 16px 22px; cursor: pointer; }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    #start-button { background: #1f7a4d; color: white; min-width: 220px; font-size: 22px; }
+    #stop-button { background: #9d2c2c; color: white; }
+    #practice-button { background: #1c1915; color: #f3efe6; }
+    .counts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 18px 0; }
+    .counts div { background: white; border: 1px solid #d9d1c3; padding: 10px; }
+    .counts strong { display: block; font-size: 28px; font-family: Georgia, serif; }
+    #log, #inbox { background: #1c1915; color: #f3efe6; padding: 14px; min-height: 160px; white-space: pre-wrap; font: 14px/1.4 ui-monospace, monospace; }
+    h2 { font-family: Georgia, serif; font-size: 24px; margin: 22px 0 8px; }
+    ul { margin-top: 0; }
+    @media (max-width: 700px) { .counts { grid-template-columns: 1fr 1fr; } h1 { font-size: 34px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Job applier</h1>
+    <p class="lede">Start reads your config and the public Greenhouse, Lever, and Ashby boards you named. A job is sent only when every required question has an answer in that config. Visible CAPTCHAs, logins, and email codes are skipped.</p>
+    <div id="banner" class="banner">Checking the config.</div>
+    <div class="row">
+      <button id="start-button" type="button">Start</button>
+      <button id="stop-button" type="button" disabled>Stop</button>
+      <button id="practice-button" type="button">Practice run</button>
+    </div>
+    <div class="counts">
+      <div><strong id="seen">0</strong>listed</div>
+      <div><strong id="matched">0</strong>matched</div>
+      <div><strong id="skipped">0</strong>skipped</div>
+      <div><strong id="filed">0</strong>filed</div>
+    </div>
+    <h2>Log</h2>
+    <div id="log">Waiting.</div>
+    <h2>Last filing on this computer</h2>
+    <div id="inbox">A practice run shows the application that was filed here. A live run sends it to the employer instead.</div>
+    <h2>Before a live run</h2>
+    <ul id="problems"></ul>
+  </main>
+  <script>
+    const start = document.getElementById("start-button");
+    const stop = document.getElementById("stop-button");
+    const practice = document.getElementById("practice-button");
+    const log = document.getElementById("log");
+    const inbox = document.getElementById("inbox");
+    const banner = document.getElementById("banner");
+    const problems = document.getElementById("problems");
+
+    function line(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div;
+    }
+
+    async function tick() {
+      const state = await fetch("/api/state").then((response) => response.json());
+      start.textContent = state.start_label || "Start";
+      start.disabled = state.running;
+      practice.disabled = state.running;
+      stop.disabled = !state.running;
+      banner.className = state.submit && !state.running ? "banner live" : "banner";
+      banner.textContent = state.running
+        ? (state.mode === "practice" ? "Practice run is filing a sample on this computer." : "Run in progress. Stop prevents the next submit.")
+        : (state.submit
+          ? "Start filing sends your resume to matching jobs."
+          : "Start dry run lists matches and does not send them. Set submit to true after the config is filled in.");
+      for (const key of ["seen", "matched", "skipped", "filed"]) {
+        document.getElementById(key).textContent = state.stats[key] || 0;
+      }
+      log.replaceChildren(...(state.log.length ? state.log.map(line) : [line("Waiting.")]));
+      if (state.inbox.length) {
+        const last = state.inbox[state.inbox.length - 1];
+        const rows = Object.entries(last).map(([key, value]) => key + ": " + value);
+        inbox.replaceChildren(...rows.map(line));
+      }
+      problems.replaceChildren(...(state.problems.length ? state.problems.map((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        return li;
+      }) : [line("Nothing blocking a dry run.")]));
+    }
+
+    async function post(url, body) {
+      await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) });
+      await tick();
+    }
+
+    start.addEventListener("click", () => post("/api/start", { mode: "config" }));
+    practice.addEventListener("click", () => post("/api/start", { mode: "practice" }));
+    stop.addEventListener("click", () => post("/api/stop", {}));
+    tick();
+    setInterval(tick, 700);
+  </script>
+</body>
+</html>

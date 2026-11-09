@@ -10,3 +10,9 @@ id_rsa
 id_ed25519
 credentials.json
 secrets/
+job-applier/config.json
+job-applier/data/
+job-applier/.venv/
+__pycache__/
+*.pyc
+*.class

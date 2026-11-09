@@ -1,0 +1,49 @@
+{
+  "submit": false,
+  "daily_cap": 10,
+  "max_age_days": 14,
+  "pause_seconds": 5,
+  "cover_letters": "template",
+  "profile": {
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "phone": "",
+    "country": "",
+    "city": "",
+    "linkedin": "",
+    "github": "",
+    "portfolio": "",
+    "work_authorization": "",
+    "needs_sponsorship": "",
+    "salary_floor": "",
+    "earliest_start_date": "",
+    "veteran_status": "decline",
+    "eeo": {
+      "gender": "decline",
+      "race": "decline",
+      "disability": "decline"
+    },
+    "privacy_consent": true,
+    "marketing_consent": false,
+    "certify_truth": true,
+    "resume_pdf": "",
+    "extra_answers": [
+      {"match": "school", "answer": ""},
+      {"match": "aws", "answer": ""}
+    ]
+  },
+  "search": {
+    "titles": [],
+    "locations": ["Remote", "North Carolina"],
+    "seniority": ["entry", "mid"],
+    "include_unspecified_seniority": true,
+    "include_keywords": [],
+    "exclude_keywords": ["unpaid"],
+    "companies": {
+      "greenhouse": [],
+      "lever": [],
+      "ashby": []
+    }
+  }
+}

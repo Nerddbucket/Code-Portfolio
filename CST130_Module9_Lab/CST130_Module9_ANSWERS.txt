@@ -1,0 +1,84 @@
+CST 130 Module 9 — ANSWERS
+==========================
+
+PART 1
+1. Shell PID / PID of ps / PPID of ps: take from YOUR ps -f. PPID of ps = your shell PID.
+Q1. The PPID of ps equals the shell PID — the shell is the parent of ps.
+Q2. TTY ? means no controlling terminal (daemon/service).
+Q3. ps = snapshot; top = live updating view.
+Q4. pstree shows parent-child tree hierarchy.
+
+PART 2
+• After Ctrl+Z: Stopped (state T)
+• Ctrl+Z = pause (SIGTSTP); Ctrl+C = interrupt/kill (SIGINT)
+• & = run in background, prompt returns immediately
+• jobs = list jobs; bg = resume background; fg = bring to foreground
+
+PART 3
+• Try SIGTERM first so process can clean up; SIGKILL force-kills and cannot be caught
+• kill = SIGTERM (15); kill -9 = SIGKILL (9)
+• Ctrl+C = SIGINT (2)
+
+PART 4
+• fork creates a child process
+• exec replaces the child with the new program
+• & returns immediately because the shell does not wait
+
+PART 5
+• Initial nice: 10
+• After renice: 15
+• Higher nice = LESS CPU preference
+• nice = start with priority; renice = change running process
+
+PART 6
+Cron entry: 0 2 * * * /home/student/backup.sh
+• at = one-time job
+• cron = recurring job
+• atd = daemon that runs at jobs
+
+PART 7
+1. renice
+2. SIGKILL / kill -9
+3. at
+4. cron
+5. Program = code on disk; process = running instance
+
+COMMANDS TO RUN ON YOUR LINUX SYSTEM
+------------------------------------
+ps
+ps -f
+ps -e | head
+ps -el | head
+pstree -p | head -30
+
+sleep 300
+# Ctrl+Z
+jobs -l
+ps -o pid,ppid,state,stat,cmd -p <PID>
+bg
+jobs -l
+fg
+# Ctrl+Z
+bg
+
+sleep 300 &
+jobs -l
+kill <PID>
+jobs -l
+sleep 300 &
+kill -9 <PID>
+
+sleep 5
+sleep 5 &
+
+nice -n 10 sleep 300 &
+ps -o pid,ppid,pri,ni,state,cmd -p <PID>
+renice 15 -p <PID>
+ps -o pid,ppid,pri,ni,state,cmd -p <PID>
+kill <PID>
+
+which at
+# at now + 2 minutes
+# echo "Module 9 at job completed" > ~/module9_at_test.txt
+# Ctrl+D
+crontab -l
